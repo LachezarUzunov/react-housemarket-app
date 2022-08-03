@@ -3,7 +3,9 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+import { toast } from 'react-toastify';
 import { db } from "../firebase.config";
+import {setDc, doc, serverTimestamp, setDoc} from 'firebase/firestore';
 
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -46,9 +48,15 @@ const SignUp = () => {
         displayName: name,
       });
 
+      const formDataCopy = {...formData};
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc(db, 'users', user.uid), formDataCopy)
+
       nagivate('/')
     } catch (error) {
-      console.log(error);
+      toast.error('Something went wrong with registration')
     }
   };
   return (

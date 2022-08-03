@@ -1,3 +1,6 @@
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
@@ -20,6 +23,27 @@ const SignIn = () => {
       [e.target.id]: e.target.value,
     }));
   };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const auth = getAuth();
+
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      if (userCredential.user) {
+        nagivate("/");
+      }
+    } catch (error) {
+      toast.error('Bad User Credentials')
+    }
+  };
+
   return (
     <React.Fragment>
       <div className="pageContainer">
@@ -27,7 +51,7 @@ const SignIn = () => {
           <p>Welcome Back!</p>
         </header>
 
-        <form>
+        <form onSubmit={onSubmit}>
           <input
             className="emailInput"
             type="email"

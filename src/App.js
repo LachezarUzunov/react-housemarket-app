@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Navbar from "./components/Navbar";
 import Explore from "./pages/Expore";
@@ -23,6 +25,7 @@ function App() {
         </Routes>
         <Navbar />
       </BrowserRouter>
+      <ToastContainer />
     </React.Fragment>
   );
 }
